@@ -21,7 +21,7 @@ if st.button("Predict"):
         "petal_width": petal_width
     }
 
-    response = requests.post("http://127.0.0.1:5050/predict", json=payload)
+    response = requests.post("https://iris-app-144529166192.us-central1.run.app/predict", json=payload)
 
     if response.status_code == 200:
         result = response.json()
