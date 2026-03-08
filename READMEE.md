@@ -1,261 +1,138 @@
-YES 🔥
-Now we make your README look professional, custom, and clearly your own work.
+# 🚀 Flask + Google Cloud Run – Iris ML Deployment (Custom Implementation)
 
-Copy-paste this entire README into your repo.
-
----
-
-# 📄 README.md (Copy Everything Below)
-
-```markdown
-# 🚀 Flask + GCP Iris ML Deployment (Custom Implementation)
-
-This project demonstrates an end-to-end MLOps pipeline where a machine learning model is:
-
-- Trained locally
-- Containerized using Docker
-- Built using Google Cloud Build
-- Deployed to Google Cloud Run
-- Integrated with a Streamlit frontend
+This project demonstrates a complete end-to-end MLOps workflow where a machine learning model is trained, containerized, built in Google Cloud, deployed to Cloud Run, and integrated with a Streamlit frontend.
 
 This implementation is customized and not identical to the base lab template.
 
 ---
 
-# 📌 Project Overview
+## 📌 Project Overview
 
-This application exposes a REST API that predicts Iris flower species using a trained Logistic Regression model.
+The application exposes a REST API that predicts Iris flower species using a trained Logistic Regression model.
 
-The deployed API is publicly accessible via Google Cloud Run and connected to a Streamlit frontend.
-
----
-
-# 🧠 Model Details
-
-- Algorithm: Logistic Regression
-- Dataset: Iris Dataset (custom training script used)
-- Evaluation Metric: Accuracy
-- Achieved Accuracy: ~96–97%
-- Model serialized using: `pickle`
+The API is deployed on **Google Cloud Run** and publicly accessible over HTTPS.  
+A **Streamlit frontend** connects to the deployed API for interactive predictions.
 
 ---
 
-# 🏗 Project Structure
+## 🧠 Model Details
 
-```
+- Algorithm: Logistic Regression  
+- Dataset: Iris Dataset  
+- Accuracy Achieved: ~96–97%  
+- Model Serialization: `pickle`  
+
+The model is trained locally and saved as:
+model/model.pkl
+
+---
+
+## 🏗 Project Structure
 
 flask-gcp-iris-kishlaya/
 │
 ├── app/
-│   ├── main.py          # Flask API
-│   ├── predict.py       # Prediction logic
-│   └── train.py         # Model training script
+│ ├── main.py # Flask API entry point
+│ ├── predict.py # Prediction logic
+│ └── train.py # Model training script
 │
 ├── model/
-│   └── model.pkl        # Trained model
+│ └── model.pkl # Trained model
 │
-├── streamlit_app.py     # Frontend UI
-├── requirements.txt     # Dependencies
-├── Dockerfile           # Container config
+├── streamlit_app.py # Frontend UI
+├── requirements.txt # Dependencies
+├── Dockerfile # Container configuration
 └── README.md
 
-```
-
 ---
 
-# ⚙️ How It Works
+## ⚙️ How the Pipeline Works
 
-### 1️⃣ Model Training
-The model is trained locally using:
-
-```
-
+### 1️⃣ Train Model Locally
 python3 app/train.py
 
-```
-
-The trained model is saved as:
-
-```
-
-model/model.pkl
-
-```
+This generates and saves the trained model.
 
 ---
 
-### 2️⃣ Local API Testing
-
-Run Flask API locally:
-
-```
-
+### 2️⃣ Test API Locally
 python -m app.main
 
-```
-
-Test using:
-
-```
-
+Test with:
 python test_api.py
-
-```
 
 ---
 
 ### 3️⃣ Docker Containerization
 
-Build Docker image locally:
-
-```
-
+Build image:
 docker build -t iris-ml-app .
 
-```
-
-Run container:
-
-```
-
+Run locally:
 docker run -p 5050:5050 iris-ml-app
 
-```
-
 ---
 
-### 4️⃣ Cloud Build (Container Build in GCP)
-
-```
-
+### 4️⃣ Build Image in Google Cloud
 gcloud builds submit --tag gcr.io/<PROJECT_ID>/iris-app
 
-```
-
-This uploads the source and builds the container image in Google Cloud.
+This builds and pushes the container to Google Container Registry.
 
 ---
 
-### 5️⃣ Cloud Run Deployment
-
-```
-
-gcloud run deploy iris-app 
---image gcr.io/<PROJECT_ID>/iris-app 
---platform managed 
---region us-central1 
---allow-unauthenticated 
+### 5️⃣ Deploy to Cloud Run
+gcloud run deploy iris-app
+--image gcr.io/<PROJECT_ID>/iris-app
+--platform managed
+--region us-central1
+--allow-unauthenticated
 --port 5050
 
-```
+---
+
+## 🌍 Live Deployment URL
+https://iris-app-144529166192.us-central1.run.app
 
 ---
 
-# 🌍 Live Deployment URL
+## 🎨 Streamlit Frontend
 
-```
-
-[https://iris-app-144529166192.us-central1.run.app](https://iris-app-144529166192.us-central1.run.app)
-
-```
-
-Example API request:
-
-```
-
-POST /predict
-
-````
-
-Sample JSON body:
-
-```json
-{
-  "sepal_length": 5.1,
-  "sepal_width": 3.5,
-  "petal_length": 1.4,
-  "petal_width": 0.2
-}
-````
-
-Response:
-
-```json
-{
-  "prediction": "setosa",
-  "confidence": 0.97
-}
-```
-
----
-
-# 🎨 Streamlit Frontend
-
-The Streamlit UI connects directly to the deployed Cloud Run backend.
+The frontend connects directly to the deployed Cloud Run API.
 
 Run locally:
-
-```
 streamlit run streamlit_app.py
-```
+---
+
+## 🔐 Cloud Services Used
+
+- Google Cloud Build  
+- Google Artifact Registry  
+- Google Cloud Run  
+- Cloud Storage  
+- Compute Engine API  
+
+Billing was configured to allow container deployment under free-tier limits.
 
 ---
 
-# 🔐 Cloud Configuration
+## 🧩 Custom Enhancements Added
 
-The following services were enabled:
+Compared to the base lab:
 
-* Cloud Build
-* Artifact Registry
-* Cloud Run
-* Cloud Storage
-* Compute Engine API
-
-Billing was configured to allow container deployment.
-
----
-
-# 🧩 Custom Enhancements Added
-
-Compared to the base lab template:
-
-* Custom project naming structure
-* Modified deployment port configuration (5050)
-* Structured project directory (app/ separation)
-* Explicit IAM permission configuration
-* Streamlit integration with live Cloud Run endpoint
-* Clean Dockerfile optimized for production
+- Custom project structure (separated app/ directory)
+- Modified serving port (5050)
+- IAM permission configuration for Cloud Build
+- Production deployment on Cloud Run
+- Streamlit integration with live endpoint
+- Clean and optimized Dockerfile
 
 ---
 
-# 📦 Technologies Used
+## 📦 Technologies Used
 
-* Python
-* Flask
-* Scikit-learn
-* Docker
-* Google Cloud Build
-* Google Cloud Run
-* Streamlit
-
----
-
-# 🎯 Key Learning Outcomes
-
-* Containerizing ML applications
-* Managing IAM permissions in GCP
-* Deploying serverless containers
-* Integrating frontend with deployed backend
-* Troubleshooting Cloud Build & IAM errors
-
----
-
-# ✅ Final Status
-
-✔ Model trained
-✔ Docker container built
-✔ Image pushed to GCR
-✔ Deployed to Cloud Run
-✔ Public HTTPS endpoint working
-✔ Streamlit connected to production backend
-
+- Python  
+- Flask  
+- Scikit-learn  
+- Docker  
+- Google Cloud Platform  
+- Streamlit  
