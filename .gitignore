@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Mac
+.DS_Store
+
+# Environment files
+.env
+
+# Model artifacts (optional if you want to exclude)
+# model/model.pkl
+
+# Streamlit cache
+.streamlit/
+
+# Misc
+*.log
